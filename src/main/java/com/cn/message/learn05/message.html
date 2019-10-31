@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>rabbmitMQ 消息提醒示例</title>
+    <link rel="stylesheet" type="text/css" href="default.css">
+    <link rel="stylesheet" type="text/css" href="jquery.notify.css">
+
+    <script type="text/css" src="stomp.js"></script>
+    <script type="text/css" src="jquery.notify.js"></script>
+</head>
+<script>
+    $(function () {
+        // 设置消息提醒
+        $.notifySetup({sound:'jquery.notify.wav'})
+        
+        // 创建客户端
+        var client = Stomp.client("ws://localhost:15674/ws");
+        定义连接成功时回调函数
+        var onConnect = function () {
+            // 订阅消息
+            client.subscribe("/exchange/exchange-stomp/shopping.discount",function (message) {
+                // 弹出业务消息提醒，并停留10秒
+                $("<p>" + message.body + "</p>").notify({stay:1000});
+            });
+        };
+        // 定义错误时回调函数
+        var onError = function (msg) {
+            $("<p>服务器错误：" + msg + "</p>").notify("error");
+        };
+        // 连接服务器
+        client.connect("guest","guest",onConnect,onError);
+        client.heartbeat.incoming = 5000;
+        client.heartbeat.outgoing = 5000;
+    })
+        
+    }
+</script>
+<body>
+
+</body>
+</html>
