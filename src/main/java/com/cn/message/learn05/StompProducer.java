@@ -31,7 +31,7 @@ public class StompProducer {
         channel.exchangeDeclare(exchangeName,"topic");
         String routingKey = "shopping.discount";
 
-        String message = "<a href=\"https:www.baidu.com\" target=\"_black\">微醺好时光，美酒3件7折，抢购猛戳</a>";
+        String message = "<a href=\"https://www.baidu.com\" target=\"_black\">微醺好时光，美酒3件7折，抢购猛戳</a>";
         // 发布消息
         channel.basicPublish(exchangeName,routingKey,null,message.getBytes());
         channel.close();
